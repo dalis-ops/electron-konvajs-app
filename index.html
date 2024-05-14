@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Canvas App</title>
+    <script src="https://unpkg.com/konva@9.3.6/konva.min.js"></script>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+        background-color: #f0f0f0;
+      }
+    </style>
+  </head>
+  <body>
+    <div style="display: flex; flex-direction: row">
+      <div id="container"></div>
+      <div id="properties"></div>
+    </div>
+    <script>
+      var width = window.innerWidth / 2;
+      var height = window.innerHeight;
+
+      var stage = new Konva.Stage({
+        container: "container",
+        width: width,
+        height: height,
+      });
+
+      var layer = new Konva.Layer();
+      var rectX = stage.width() / 2 - 50;
+      var rectY = stage.height() / 2 - 25;
+
+      var box = new Konva.Rect({
+        x: rectX,
+        y: rectY,
+        width: 100,
+        height: 50,
+        fill: "#00D2FF",
+        stroke: "black",
+        strokeWidth: 4,
+        draggable: true,
+      });
+
+      // add cursor styling
+      box.on("mouseover", function () {
+        document.body.style.cursor = "pointer";
+      });
+      box.on("mouseout", function () {
+        document.body.style.cursor = "default";
+      });
+
+      layer.add(box);
+      stage.add(layer);
+      document
+        .getElementById("container")
+        .addEventListener("dragover", (event) => {
+          event.preventDefault();
+        });
+
+      layer.on("click tap", (event) => {
+        if (event.target !== stage) {
+          console.log(event.target);
+          const handleClick = (e) => {
+            console.log(e.target.value);
+          };
+          document.getElementById(
+            "properties"
+          ).innerHTML = `<h3>Properties</h3><p>X: ${event.target.x()}, Y: ${event.target.y()}, Width: ${event.target.width()}, Height: ${event.target.height()}</p>`;
+        }
+      });
+    </script>
+  </body>
+</html>
